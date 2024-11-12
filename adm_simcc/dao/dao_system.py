@@ -79,8 +79,12 @@ def select_user(uid):
     )
 
     data_frame = data_frame.merge(users_roles(), on="user_id", how="left")
-    data_frame = data_frame.merge(users_graduate_program(), on="lattes_id", how="left")
-    data_frame = data_frame.merge(users_departaments(), on="lattes_id", how="left")
+    data_frame = data_frame.merge(
+        users_graduate_program(), on="lattes_id", how="left"
+    )
+    data_frame = data_frame.merge(
+        users_departaments(), on="lattes_id", how="left"
+    )
 
     data_frame.fillna("", inplace=True)
     return data_frame.to_dict(orient="records")
@@ -124,8 +128,12 @@ def list_all_users():
     )
 
     data_frame = data_frame.merge(users_roles(), on="user_id", how="left")
-    data_frame = data_frame.merge(users_graduate_program(), on="lattes_id", how="left")
-    data_frame = data_frame.merge(users_departaments(), on="lattes_id", how="left")
+    data_frame = data_frame.merge(
+        users_graduate_program(), on="lattes_id", how="left"
+    )
+    data_frame = data_frame.merge(
+        users_departaments(), on="lattes_id", how="left"
+    )
 
     data_frame.fillna("", inplace=True)
     return data_frame.to_dict(orient="records")
@@ -249,7 +257,9 @@ def update_permission(permission):
         SET permission = %s
         WHERE id = %s;
         """
-    adm_database.exec(SCRIPT_SQL, [permission[0]["permission"], permission[0]["id"]])
+    adm_database.exec(
+        SCRIPT_SQL, [permission[0]["permission"], permission[0]["id"]]
+    )
 
 
 def delete_permission(permission):
@@ -335,7 +345,9 @@ def users_graduate_program():
         """
     registry = adm_database.select(SCRIPT_SQL)
 
-    data_frame = pd.DataFrame(registry, columns=["lattes_id", "graduate_program"])
+    data_frame = pd.DataFrame(
+        registry, columns=["lattes_id", "graduate_program"]
+    )
 
     return data_frame
 
@@ -393,8 +405,8 @@ def add_feedback(feedback: FeedbackSchema):
 
 def add_group_producion(producion):
     SCRIPT_SQL = """
-        INSERT INTO public.research_group_production(
-	    group_id, type, production_id)
-	    VALUES (%(group_id)s, %(type)s, %(production_id)s);
-"""
+        INSERT INTO public.research_group_production
+        (group_id, type, production_id)
+        VALUES (%(group_id)s, %(type)s, %(production_id)s);
+        """
     adm_database.exec(SCRIPT_SQL, producion)

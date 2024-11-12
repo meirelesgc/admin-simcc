@@ -1,16 +1,12 @@
-CREATE DATABASE admin;
-\ c admin;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE EXTENSION IF NOT EXISTS unaccent;
 CREATE TYPE relationship AS ENUM ('COLABORADOR', 'PERMANENTE');
-CREATE TYPE hop_status AS ENUM ('PADRÃO', 'CARGA SOLICITADA', 'EM PROCESSAMENTO');
 CREATE TABLE IF NOT EXISTS public.institution(
       institution_id uuid DEFAULT uuid_generate_v4(),
       name VARCHAR(255) NOT NULL,
       acronym VARCHAR(50) UNIQUE,
       lattes_id CHAR(16),
-      load_status hop_status NOT NULL DEFAULT 'PADRÃO',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (institution_id)

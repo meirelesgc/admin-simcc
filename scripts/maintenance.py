@@ -2,6 +2,7 @@ import os
 
 import pandas as pd
 import psycopg2
+
 from adm_simcc.dao import Connection
 
 database = Connection()
@@ -51,11 +52,15 @@ def import_graduate_program(file_path):
             site,
             acronym
         )
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """
+        SELECT %s, %s, %s, %s, %s, %s, institution_id, %s, %s, %s, %s, %s, %s, %s, %s
+        FROM institution
+        WHERE acronym = %s;
+    """
+
     dataframe = pd.read_csv(
         file_path, sep=",", quotechar='"', doublequote=True, escapechar=None
     )
+    dataframe = dataframe.fillna("")
     for k, graduate_program in dataframe.iterrows():
         database.exec(
             SCRIPT_SQL,
@@ -66,7 +71,6 @@ def import_graduate_program(file_path):
                 graduate_program["modality"],
                 graduate_program["type"],
                 graduate_program["rating"],
-                graduate_program["institution_id"],
                 graduate_program["state"],
                 graduate_program["city"],
                 graduate_program["region"],
@@ -75,6 +79,7 @@ def import_graduate_program(file_path):
                 graduate_program["visible"],
                 graduate_program["site"],
                 graduate_program["acronym"],
+                graduate_program["i.acronym"],
             ],
         )
 
@@ -156,11 +161,11 @@ def select_file():
 
 
 if __name__ == "__main__":
-    file_path = select_file()
-    import_researcher(file_path)
+    # file_path = select_file()
+    # import_researcher(file_path)
     file_path = select_file()
     import_graduate_program(file_path)
-    file_path = select_file()
-    import_graduate_program_researcher(file_path)
-    file_path = select_file()
-    import_graduate_program_student(file_path)
+    # file_path = select_file()
+    # import_graduate_program_researcher(file_path)
+    # file_path = select_file()
+    # import_graduate_program_student(file_path)
