@@ -266,9 +266,9 @@ def feedback():
         ), 400
 
 
-UPLOAD_FOLDER = 'files\imagens'
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'files', 'imagens')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @rest_system.route('/upload/<id>', methods=['POST'])
 def upload_image(id):
@@ -294,4 +294,4 @@ def get_image(id):
             return send_file(file_path)
 
     # Se não encontrar a imagem, retorna 404
-    return abort(404, description="Imagem não encontrada")
+    return "ok"
