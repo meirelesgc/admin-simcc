@@ -4,7 +4,7 @@ import subprocess
 from http import HTTPStatus
 
 import psycopg2
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_file
 from pydantic import ValidationError
 
 from ..dao import dao_system
@@ -264,3 +264,34 @@ def feedback():
         return jsonify(
             {"message": "Validation error", "errors": e.errors()}
         ), 400
+
+
+UPLOAD_FOLDER = 'files\imagens'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@rest_system.route('/upload/<id>', methods=['POST'])
+def upload_image(id):
+    print (id)
+    if 'file' not in request.files:
+        return 'Nenhum arquivo enviado', 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return 'Nenhum arquivo selecionado', 400
+    extension = file.filename.rsplit('.', 1)[1] if '.' in file.filename else 'jpg'
+    file_path = os.path.join(UPLOAD_FOLDER, f"{id}.{extension}")
+    file.save(file_path)
+
+    return 'Imagem salva com sucesso', 200
+
+@rest_system.route('/image/<id>', methods=['GET'])
+def get_image(id):
+    # Procurar a imagem no diretório de uploads
+    for extension in ['jpg', 'jpeg', 'png', 'gif']:
+        file_path = os.path.join(UPLOAD_FOLDER, f"{id}.{extension}")
+        if os.path.isfile(file_path):
+            return send_file(file_path)
+
+    # Se não encontrar a imagem, retorna 404
+    return abort(404, description="Imagem não encontrada")
