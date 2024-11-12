@@ -401,3 +401,12 @@ def add_feedback(feedback: FeedbackSchema):
         VALUES (%(name)s, %(email)s, %(rating)s, %(description)s);
         """
     adm_database.exec(SCRIPT_SQL, feedback.model_dump())
+
+def add_group_producion(producion):
+    SCRIPT_SQL = """
+        INSERT INTO public.resarch_group_producion(
+	    group_id, type, producion_id)
+	    VALUES (%(group_id)s, %(type)s, %(producion_id)s);
+"""
+    adm_database.exec(SCRIPT_SQL, producion)
+    

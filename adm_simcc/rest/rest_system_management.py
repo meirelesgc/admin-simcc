@@ -287,11 +287,17 @@ def upload_image(id):
 
 @rest_system.route('/image/<id>', methods=['GET'])
 def get_image(id):
-    # Procurar a imagem no diretório de uploads
+
     for extension in ['jpg', 'jpeg', 'png', 'gif']:
         file_path = os.path.join(UPLOAD_FOLDER, f"{id}.{extension}")
         if os.path.isfile(file_path):
             return send_file(file_path)
 
-    # Se não encontrar a imagem, retorna 404
+    return "ok"
+
+@rest_system.route("/group_producion", methods= ['POST'])
+def post_group():
+    producion = request.get_json()
+    dao_system.add_group_producion(producion)
+   
     return "ok"
