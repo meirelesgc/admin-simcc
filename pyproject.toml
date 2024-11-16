@@ -17,6 +17,7 @@ httpie = "^3.2.2"
 zeep = "^4.2.1"
 streamlit = "^1.35.0"
 python-dotenv = "^1.0.1"
+pydantic-settings = "^2.6.1"
 
 
 

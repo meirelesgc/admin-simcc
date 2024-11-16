@@ -25,7 +25,9 @@ def create_user():
         dao_system.create_user(user)
         return jsonify("OK"), HTTPStatus.CREATED
     except psycopg2.errors.UniqueViolation:
-        return jsonify({"message": "discente já cadastrado"}), HTTPStatus.CONFLICT
+        return jsonify(
+            {"message": "discente já cadastrado"}
+        ), HTTPStatus.CONFLICT
 
 
 # @rest_system.route("/s/ufmg/user", methods=["GET"])
@@ -170,7 +172,9 @@ def assign_user():
         dao_system.assign_user(user)
         return jsonify("OK"), HTTPStatus.CREATED
     except psycopg2.errors.UniqueViolation:
-        return jsonify({"message": "discente já cadastrado"}), HTTPStatus.CONFLICT
+        return jsonify(
+            {"message": "discente já cadastrado"}
+        ), HTTPStatus.CONFLICT
 
 
 @rest_system.route("/s/user/permissions", methods=["GET"])
@@ -233,11 +237,15 @@ def get_last_log_line():
             lines = log_file.readlines()
             last_line = lines[-1].strip() if lines else "Log file is empty."
 
-        return jsonify({"status": "success", "message": last_line}), HTTPStatus.OK
+        return jsonify(
+            {"status": "success", "message": last_line}
+        ), HTTPStatus.OK
 
     except Exception as e:
         return (
-            jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}),
+            jsonify(
+                {"status": "error", "message": f"An error occurred: {str(e)}"}
+            ),
             HTTPStatus.INTERNAL_SERVER_ERROR,
         )
 
@@ -257,7 +265,9 @@ def feedback():
             200,
         )
     except ValidationError as e:
-        return jsonify({"message": "Validation error", "errors": e.errors()}), 400
+        return jsonify(
+            {"message": "Validation error", "errors": e.errors()}
+        ), 400
 
 
 UPLOAD_FOLDER = os.path.join(os.getcwd(), "files", "imagens")
@@ -271,9 +281,11 @@ def upload_image(id):
         return "Nenhum arquivo enviado", 400
 
     file = request.files["file"]
-    if file.filename == "":
+    if file.filename is None:
         return "Nenhum arquivo selecionado", 400
-    extension = file.filename.rsplit(".", 1)[1] if "." in file.filename else "jpg"
+    extension = (
+        file.filename.rsplit(".", 1)[1] if "." in file.filename else "jpg"
+    )
     file_path = os.path.join(UPLOAD_FOLDER, f"{id}.{extension}")
     file.save(file_path)
 
@@ -282,7 +294,6 @@ def upload_image(id):
 
 @rest_system.route("/image/<id>", methods=["GET"])
 def get_image(id):
-
     for extension in ["jpg", "jpeg", "png", "gif"]:
         file_path = os.path.join(UPLOAD_FOLDER, f"{id}.{extension}")
         if os.path.isfile(file_path):
