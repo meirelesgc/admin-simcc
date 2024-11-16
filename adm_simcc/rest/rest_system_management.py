@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+import requests
 from http import HTTPStatus
 
 import psycopg2
@@ -295,3 +296,18 @@ def post_group():
     producion = request.get_json()
     dao_system.add_group_producion(producion)
     return "ok"
+
+@rest_system.route("/deletarimagem/<id>", methods=["DELETE"])
+def delete_image(id):
+
+    for extension in ["jpg", "jpeg", "png", "gif"]:
+        file_path = os.path.join(UPLOAD_FOLDER, f"{id}.{extension}")
+        print(f"Procurando arquivo: {file_path}")
+        if os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+                return "Imgem deletada com sucesso"
+            except Exception as e:
+                return {"error": f"Erro ao deletar a imagem: {str(e)}"}, 500
+    
+    return {"error": "Imagem não encontrada"}, 404
