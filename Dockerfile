@@ -14,4 +14,4 @@ RUN poetry install --no-interaction --no-ansi
 
 EXPOSE 5002
 
-CMD ["poetry", "run", "gunicorn", "-b", "0.0.0.0:5002", "adm_simcc:create_app", "--reload", "--log-level", "error", "--access-logfile", "-", "--error-logfile", "-", "--workers", "4"]
+CMD ["poetry", "run", "gunicorn", "-b", "0.0.0.0:5002", "adm_simcc:create_app()", "--reload", "--log-level", "error", "--access-logfile", "-", "--error-logfile", "-", "--workers", "4"]
