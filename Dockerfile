@@ -10,8 +10,7 @@ COPY . .
 # Instala o Poetry e as dependências
 RUN pip install poetry && \
     poetry config installer.max-workers 10 && \
-    poetry install --no-interaction --no-ansi && \
-    poetry run python -m nltk.downloader stopwords
+    poetry install --no-interaction --no-ansi
 
 # Expondo a porta da aplicação
 EXPOSE 8080
