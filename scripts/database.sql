@@ -241,7 +241,6 @@ INSERT INTO public.institution (
             name,
             acronym,
             lattes_id,
-            load_status,
             created_at,
             updated_at
       )
@@ -250,7 +249,6 @@ VALUES (
             'Universidade Federal de Minas Gerais',
             'UFMG',
             '',
-            'PADRÃO',
             '2024-08-21 15:43:32.621733',
             '2024-08-21 15:43:32.621733'
       ),
@@ -259,7 +257,6 @@ VALUES (
             'SENAI CIMATEC',
             'CIMATEC',
             '',
-            'PADRÃO',
             '2024-08-21 15:43:32.621733',
             '2024-08-21 15:43:32.621733'
       );
